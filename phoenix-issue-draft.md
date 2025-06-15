@@ -14,7 +14,7 @@ Tailwind v4 has an architecture-specific CSS generation bug:
 ## Reproduction
 
 I've created a minimal reproduction showing the Tailwind v4 bug:
-https://github.com/[yourusername]/tailwindcss-v4-arch-bug
+https://github.com/elepedus/tailwindcss-v4-arch-bug
 
 The issue has been reported to Tailwind: [Link to Tailwind issue]
 
@@ -67,5 +67,5 @@ Until this is fixed, Phoenix 1.8 users can:
 ## Related Links
 
 - Tailwind CSS Issue: [Link to issue]
-- Reproduction Repository: https://github.com/[yourusername]/tailwindcss-v4-arch-bug
+- Reproduction Repository: https://github.com/elepedus/tailwindcss-v4-arch-bug
 - Original Discovery: [Link to forum/discussion where this was found]

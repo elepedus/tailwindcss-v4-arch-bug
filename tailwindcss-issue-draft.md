@@ -7,11 +7,11 @@ Tailwind CSS v4 generates different CSS output when run on ARM64 vs AMD64 archit
 ## Reproduction
 
 I've created a minimal reproduction repository with Docker-based tests:
-https://github.com/[yourusername]/tailwindcss-v4-arch-bug
+https://github.com/elepedus/tailwindcss-v4-arch-bug
 
 ### Quick reproduction:
 ```bash
-git clone https://github.com/[yourusername]/tailwindcss-v4-arch-bug.git
+git clone https://github.com/elepedus/tailwindcss-v4-arch-bug.git
 cd tailwindcss-v4-arch-bug
 ./verify.sh  # or docker compose up
 ```
@@ -34,10 +34,10 @@ Tailwind should generate identical CSS output regardless of CPU architecture, as
 The missing CSS causes visible differences:
 
 **AMD64 Build** - Gradient is missing:
-![AMD64 Screenshot](https://github.com/[yourusername]/tailwindcss-v4-arch-bug/blob/main/screenshots/v4-amd64.png)
+![AMD64 Screenshot](https://github.com/elepedus/tailwindcss-v4-arch-bug/blob/main/screenshots/v4-amd64.png)
 
 **ARM64 Build** - Gradient displays correctly:
-![ARM64 Screenshot](https://github.com/[yourusername]/tailwindcss-v4-arch-bug/blob/main/screenshots/v4-arm64.png)
+![ARM64 Screenshot](https://github.com/elepedus/tailwindcss-v4-arch-bug/blob/main/screenshots/v4-arm64.png)
 
 ## Environment
 
