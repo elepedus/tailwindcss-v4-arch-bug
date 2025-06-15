@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailwind Architecture Test</title>
+</head>
+<body>
+    <!-- This gradient div uses arbitrary value positioning classes -->
+    <!-- On AMD64: The gradient is missing (left-[40rem] CSS not generated) -->
+    <!-- On ARM64: The gradient displays correctly -->
+    <div class="left-[40rem] fixed inset-y-0 right-0 z-0 hidden lg:block xl:left-[50rem]">
+        <svg viewBox="0 0 1480 957" fill="none" aria-hidden="true" class="absolute inset-0 h-full w-full">
+            <path fill="#EE7868" d="M0 0h1480v957H0z" />
+        </svg>
+    </div>
+    
+    <div class="px-4 py-10">
+        <h1 class="text-4xl font-bold">Architecture Test</h1>
+        <p class="mt-4 text-lg">The gradient should be visible on the right side.</p>
+        <p class="mt-2 text-sm text-gray-600">Classes used: left-[40rem] and xl:left-[50rem]</p>
+    </div>
+</body>
+</html>

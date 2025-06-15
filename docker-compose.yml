@@ -1,0 +1,81 @@
+services:
+  # Tailwind v3 tests - These should produce identical output
+  v3-amd64:
+    build:
+      context: .
+      dockerfile: v3/Dockerfile
+      platforms:
+        - linux/amd64
+    volumes:
+      - ./outputs:/outputs
+    command: sh -c "tailwindcss -i input.css -o /outputs/v3-amd64.css && echo 'v3 AMD64: '$$(wc -c < /outputs/v3-amd64.css)' bytes'"
+
+  v3-arm64:
+    build:
+      context: .
+      dockerfile: v3/Dockerfile
+      platforms:
+        - linux/arm64
+    volumes:
+      - ./outputs:/outputs
+    command: sh -c "tailwindcss -i input.css -o /outputs/v3-arm64.css && echo 'v3 ARM64: '$$(wc -c < /outputs/v3-arm64.css)' bytes'"
+
+  # Tailwind v4 tests - These produce DIFFERENT output (bug)
+  v4-amd64:
+    build:
+      context: .
+      dockerfile: v4/Dockerfile
+      platforms:
+        - linux/amd64
+    volumes:
+      - ./outputs:/outputs
+    command: sh -c "./tailwindcss -i input.css -o /outputs/v4-amd64.css && echo 'v4 AMD64: '$$(wc -c < /outputs/v4-amd64.css)' bytes'"
+
+  v4-arm64:
+    build:
+      context: .
+      dockerfile: v4/Dockerfile
+      platforms:
+        - linux/arm64
+    volumes:
+      - ./outputs:/outputs
+    command: sh -c "./tailwindcss -i input.css -o /outputs/v4-arm64.css && echo 'v4 ARM64: '$$(wc -c < /outputs/v4-arm64.css)' bytes'"
+
+  # Verification service
+  verify:
+    image: alpine:latest
+    volumes:
+      - ./outputs:/outputs
+    depends_on:
+      - v3-amd64
+      - v3-arm64
+      - v4-amd64
+      - v4-arm64
+    command: |
+      sh -c "
+        sleep 5
+        echo '=== RESULTS ==='
+        echo ''
+        echo 'Tailwind v3 (EXPECTED: identical output):'
+        echo '  AMD64: '$$(wc -c < /outputs/v3-amd64.css 2>/dev/null || echo 'not found')' bytes'
+        echo '  ARM64: '$$(wc -c < /outputs/v3-arm64.css 2>/dev/null || echo 'not found')' bytes'
+        if diff /outputs/v3-amd64.css /outputs/v3-arm64.css > /dev/null 2>&1; then
+          echo '  ✅ PASS: Files are identical'
+        else
+          echo '  ❌ FAIL: Files differ (this would be unexpected)'
+        fi
+        echo ''
+        echo 'Tailwind v4 (BUG: different output):'
+        echo '  AMD64: '$$(wc -c < /outputs/v4-amd64.css 2>/dev/null || echo 'not found')' bytes'
+        echo '  ARM64: '$$(wc -c < /outputs/v4-arm64.css 2>/dev/null || echo 'not found')' bytes'
+        if diff /outputs/v4-amd64.css /outputs/v4-arm64.css > /dev/null 2>&1; then
+          echo '  ✅ Files are identical'
+        else
+          echo '  ❌ BUG CONFIRMED: Files differ!'
+          echo '  Difference: '$$(($(wc -c < /outputs/v4-arm64.css) - $(wc -c < /outputs/v4-amd64.css)))' bytes'
+          echo ''
+          echo '  Checking for left-[40rem] class:'
+          echo '  AMD64: '$$(grep -c 'left-\[40rem\]' /outputs/v4-amd64.css 2>/dev/null || echo 0)' occurrences'
+          echo '  ARM64: '$$(grep -c 'left-\[40rem\]' /outputs/v4-arm64.css 2>/dev/null || echo 0)' occurrences'
+        fi
+      "
