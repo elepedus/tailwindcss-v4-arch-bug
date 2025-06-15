@@ -89,8 +89,8 @@ The architecture-specific Tailwind v4 binaries appear to parse/generate CSS diff
 
 ## 🔗 Related Issues
 
-- Phoenix Framework: [Link to Phoenix issue]
-- Original Discovery: [Link to discussion]
+- TailwindCSS Issue: https://github.com/tailwindlabs/tailwindcss/issues/18315
+- Phoenix Framework Issue: https://github.com/phoenixframework/phoenix/issues/6304
 
 ---
 
